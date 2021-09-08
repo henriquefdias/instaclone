@@ -14,9 +14,15 @@ export class Auth {
     public cadastrarUsuario(usuario: Usuario): void {
         console.log('Chegou no serviço: ', usuario);
         const auth = fireAuth.getAuth();
+        const data = fireData.getDatabase();
         fireAuth.createUserWithEmailAndPassword(auth, usuario.email, usuario.senha)
             .then((resposta: any) => {
-                console.log(resposta);
+                
+                delete usuario.senha
+                
+                fireData.ref(data, `usuario_detalhe/${btoa(usuario.email)}`)
+                    .set(usuario)
+
             }).catch((error: Error) => {
                 console.log(error);
             });
