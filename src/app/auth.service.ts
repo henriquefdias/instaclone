@@ -17,11 +17,9 @@ export class Auth {
         const data = fireData.getDatabase();
         fireAuth.createUserWithEmailAndPassword(auth, usuario.email, usuario.senha)
             .then((resposta: any) => {
+                let refData: any = fireData.ref(data, `usuario_detalhe/${btoa(usuario.email)}`)
                 
-                delete usuario.senha
-                
-                fireData.ref(data, `usuario_detalhe/${btoa(usuario.email)}`)
-                    .set(usuario)
+                fireData.set(refData, usuario)
 
             }).catch((error: Error) => {
                 console.log(error);
