@@ -15,10 +15,21 @@ export class Auth {
         console.log('Chegou no serviço: ', usuario);
         const auth = fireAuth.getAuth();
         const data = fireData.getDatabase();
+        
         fireAuth.createUserWithEmailAndPassword(auth, usuario.email, usuario.senha)
             .then((resposta: any) => {
-                let refData: any = fireData.ref(data, `usuario_detalhe/${btoa(usuario.email)}`)
+
+                // @ts-expect-error
+                delete usuario.senha
+                /*
                 
+                Não é possivel usar o delete sem o @ts-expect-error pois ele pede que o argumento (usuario.senha)
+                seja opcional, mas ele nao pode ser qualquer coisa que nao seja string para que funcione corretamente 
+                na função createUserWithEmailAndPassword.
+
+                */ 
+
+                let refData: any = fireData.ref(data, `usuario_detalhe/${btoa(usuario.email)}`)
                 fireData.set(refData, usuario)
 
             }).catch((error: Error) => {
