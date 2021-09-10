@@ -13,10 +13,10 @@ import * as fireStore from '@firebase/firestore';
 export class Auth {
     public cadastrarUsuario(usuario: Usuario): void {
         console.log('Chegou no serviço: ', usuario);
-        const auth = fireAuth.getAuth();
-        const data = fireData.getDatabase();
+        const AUTH = fireAuth.getAuth();
+        const DATA = fireData.getDatabase();
         
-        fireAuth.createUserWithEmailAndPassword(auth, usuario.email, usuario.senha)
+        fireAuth.createUserWithEmailAndPassword(AUTH, usuario.email, usuario.senha)
             .then((resposta: any) => {
 
                 // @ts-expect-error
@@ -29,11 +29,18 @@ export class Auth {
 
                 */ 
 
-                let refData: any = fireData.ref(data, `usuario_detalhe/${btoa(usuario.email)}`)
+                let refData: any = fireData.ref(DATA, `usuario_detalhe/${btoa(usuario.email)}`)
                 fireData.set(refData, usuario)
 
             }).catch((error: Error) => {
                 console.log(error);
             });
+    }
+
+    public autenticar(email: string, senha: string): void {
+        const AUTHLOGIN = fireAuth.getAuth();
+        fireAuth.signInWithEmailAndPassword(AUTHLOGIN, email, senha)
+            .then((resposta: any) => console.log(resposta))
+            .catch((error: any) => console.log(error))
     }
 }
