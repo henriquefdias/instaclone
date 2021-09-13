@@ -11,12 +11,12 @@ import * as fireData from '@firebase/database';
 import * as fireStore from '@firebase/firestore';
 
 export class Auth {
-    public cadastrarUsuario(usuario: Usuario): void {
+    public cadastrarUsuario(usuario: Usuario): Promise<any> {
         console.log('Chegou no serviço: ', usuario);
         const AUTH = fireAuth.getAuth();
         const DATA = fireData.getDatabase();
         
-        fireAuth.createUserWithEmailAndPassword(AUTH, usuario.email, usuario.senha)
+        return fireAuth.createUserWithEmailAndPassword(AUTH, usuario.email, usuario.senha)
             .then((resposta: any) => {
 
                 // @ts-expect-error
