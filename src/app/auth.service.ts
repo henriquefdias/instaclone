@@ -11,6 +11,9 @@ import * as fireData from '@firebase/database';
 import * as fireStore from '@firebase/firestore';
 
 export class Auth {
+
+    public tokenId: string = ''
+    
     public cadastrarUsuario(usuario: Usuario): Promise<any> {
         console.log('Chegou no serviço: ', usuario);
         const AUTH = fireAuth.getAuth();
@@ -40,7 +43,15 @@ export class Auth {
     public autenticar(email: string, senha: string): void {
         const AUTHLOGIN = fireAuth.getAuth();
         fireAuth.signInWithEmailAndPassword(AUTHLOGIN, email, senha)
-            .then((resposta: any) => console.log(resposta))
+            .then((resposta: any) => {
+                // @ts-expect-error
+                let user: fireAuth.User = AUTHLOGIN.currentUser;
+                fireAuth.getIdToken(user)
+                    .then((id_token: string) => {
+                        this.tokenId = id_token
+                        console.log(this.tokenId);
+                    })
+            })
             .catch((error: any) => console.log(error))
     }
 }
