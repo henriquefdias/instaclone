@@ -10,10 +10,16 @@ import * as fireData from '@firebase/database';
 // import Cloud Firestore (optional)
 import * as fireStore from '@firebase/firestore';
 
+import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
+
+@Injectable()
 export class Auth {
 
     public tokenId: string = ''
     
+    constructor(private router: Router) {}
+
     public cadastrarUsuario(usuario: Usuario): Promise<any> {
         console.log('Chegou no serviço: ', usuario);
         const AUTH = fireAuth.getAuth();
@@ -49,7 +55,7 @@ export class Auth {
                 fireAuth.getIdToken(user)
                     .then((id_token: string) => {
                         this.tokenId = id_token
-                        console.log(this.tokenId);
+                        this.router.navigate(['/home'])
                     })
             })
             .catch((error: any) => console.log(error))
