@@ -15,6 +15,7 @@ import { CadastroComponent } from './acesso/cadastro/cadastro.component';
 import { Auth } from './auth.service';
 import { HomeComponent } from './home/home.component';
 import { PublicacoesComponent } from './home/publicacoes/publicacoes.component';
+import { AuthGuard } from './auth-guard.service';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,7 @@ import { PublicacoesComponent } from './home/publicacoes/publicacoes.component';
     ReactiveFormsModule,
     RouterModule.forRoot(ROUTES)
   ],
-  providers: [Auth],
+  providers: [Auth, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
