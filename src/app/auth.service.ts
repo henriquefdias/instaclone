@@ -16,7 +16,7 @@ import { Router } from "@angular/router";
 @Injectable()
 export class Auth {
 
-    public tokenId: string = ''
+    public token_id: any = ''
     
     constructor(private router: Router) {}
 
@@ -53,8 +53,9 @@ export class Auth {
                 // @ts-expect-error
                 let user: fireAuth.User = AUTHLOGIN.currentUser;
                 fireAuth.getIdToken(user)
-                    .then((id_token: string) => {
-                        this.tokenId = id_token
+                    .then((idToken: string) => {
+                        this.token_id = idToken
+                        localStorage.setItem('idToken', idToken)
                         this.router.navigate(['/home'])
                     })
             })
@@ -62,6 +63,20 @@ export class Auth {
     }
 
     public autenticado(): boolean {
-        return this.tokenId !== undefined
+        if(this.token_id === undefined && localStorage.getItem('idToken') !== null) {
+            this.token_id = localStorage.getItem('idToken')
+        }
+        return this.token_id !== undefined
     }
+
+    public sair(): void {
+        const AUTH = fireAuth.getAuth();
+        fireAuth.signOut(AUTH)
+            .then(() => {
+                localStorage.removeItem('idToken')
+                this.token_id = undefined
+                this.router.navigate(['/'])
+            })
+    }
+
 }
