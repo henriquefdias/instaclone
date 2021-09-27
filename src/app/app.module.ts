@@ -10,6 +10,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AcessoComponent } from './acesso/acesso.component';
 import { BannerComponent } from './acesso/banner/banner.component';
+import { Bd } from "./bd.service";
 import { LoginComponent } from './acesso/login/login.component';
 import { CadastroComponent } from './acesso/cadastro/cadastro.component';
 import { Auth } from './auth.service';
@@ -36,7 +37,7 @@ import { IncluirPublicacaoComponent } from './home/incluir-publicacao/incluir-pu
     ReactiveFormsModule,
     RouterModule.forRoot(ROUTES)
   ],
-  providers: [Auth, AuthGuard],
+  providers: [Auth, AuthGuard, Bd],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
