@@ -1,14 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import * as firebase from '@firebase/app';
-
-// import Firebase Authentication (optional)
-import '@firebase/auth';
-
-// import Firebase Realtime Database (optional)
-import '@firebase/database';
-
-// import Cloud Firestore (optional)
-import '@firebase/firestore';
+import * as firebase from 'firebase';
 
 @Component({
   selector: 'app-root',
@@ -27,6 +18,6 @@ export class AppComponent implements OnInit{
       messagingSenderId: "109352664265",
       appId: "1:109352664265:web:99c01ac9cbcbad4f0be118"
     };
-    firebase.initializeApp(firebaseConfig)
+    firebase.default.initializeApp(firebaseConfig)
   }
 }

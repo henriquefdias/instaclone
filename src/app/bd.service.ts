@@ -1,22 +1,19 @@
-import * as firebase from '@firebase/app';
-
-// import Firebase Authentication (optional)
-import * as fireAuth from '@firebase/auth';
-
-// import Firebase Realtime Database (optional)
-import * as fireData from '@firebase/database';
-
-// import Cloud Firestore (optional)
-import * as fireStore from '@firebase/firestore';
+import * as firebase from 'firebase';
 
 export class Bd {
     public publicar(publicacao: any): void {
 
+        console.log(publicacao);
+
+        let nomeImagem = Date.now()
+        firebase.default.storage().ref()
+            .child(`imagens/${nomeImagem}`)
+            .put(publicacao.imagem)
+
+        /*
         const DATA = fireData.getDatabase();
         let refData: any = fireData.ref(DATA, `publicacoes/${btoa(publicacao.email)}`);
         fireData.push(refData, {titulo: publicacao.titulo})
-
-
-        console.log("Chegou no serviço bd");
+        */
     }
 }

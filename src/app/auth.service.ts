@@ -1,14 +1,6 @@
 import { Usuario } from "./acesso/usuario.model";
-import * as firebase from '@firebase/app';
 
-// import Firebase Authentication (optional)
-import * as fireAuth from '@firebase/auth';
-
-// import Firebase Realtime Database (optional)
-import * as fireData from '@firebase/database';
-
-// import Cloud Firestore (optional)
-import * as fireStore from '@firebase/firestore';
+import * as firebase from "firebase";
 
 import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
@@ -21,11 +13,8 @@ export class Auth {
     constructor(private router: Router) {}
 
     public cadastrarUsuario(usuario: Usuario): Promise<any> {
-        console.log('Chegou no serviço: ', usuario);
-        const AUTH = fireAuth.getAuth();
-        const DATA = fireData.getDatabase();
         
-        return fireAuth.createUserWithEmailAndPassword(AUTH, usuario.email, usuario.senha)
+        return firebase.default.auth().createUserWithEmailAndPassword(usuario.email, usuario.senha)
             .then((resposta: any) => {
 
                 // @ts-expect-error
@@ -37,9 +26,8 @@ export class Auth {
                 na função createUserWithEmailAndPassword.
 
                 */ 
-
-                let refData: any = fireData.ref(DATA, `usuario_detalhe/${btoa(usuario.email)}`)
-                fireData.set(refData, usuario)
+                firebase.default.database().ref(`usuario_detalhe/${btoa(usuario.email)}`)
+                    .set(usuario)
 
             }).catch((error: Error) => {
                 console.log(error);
@@ -47,12 +35,9 @@ export class Auth {
     }
 
     public autenticar(email: string, senha: string): void {
-        const AUTHLOGIN = fireAuth.getAuth();
-        fireAuth.signInWithEmailAndPassword(AUTHLOGIN, email, senha)
+        firebase.default.auth().signInWithEmailAndPassword(email, senha)
             .then((resposta: any) => {
-                // @ts-expect-error
-                let user: fireAuth.User = AUTHLOGIN.currentUser;
-                fireAuth.getIdToken(user)
+                firebase.default.auth().currentUser?.getIdToken()
                     .then((idToken: string) => {
                         this.token_id = idToken
                         localStorage.setItem('idToken', idToken)
@@ -75,8 +60,7 @@ export class Auth {
     }
 
     public sair(): void {
-        const AUTH = fireAuth.getAuth();
-        fireAuth.signOut(AUTH)
+        firebase.default.auth().signOut()
             .then(() => {
                 localStorage.removeItem('idToken')
                 this.token_id = undefined
