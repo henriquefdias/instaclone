@@ -9,6 +9,19 @@ export class Bd {
         firebase.default.storage().ref()
             .child(`imagens/${nomeImagem}`)
             .put(publicacao.imagem)
+            .on(firebase.default.storage.TaskEvent.STATE_CHANGED,
+                // acompanhamento do progresso do upload
+                (snapshot: any) => {
+                    console.log(snapshot);
+                },
+                (error) => {
+                    console.log(error);
+                },
+                () => {
+                    // finalização do processo
+                    console.log("Upload completo");
+                }
+            )
 
         /*
         const DATA = fireData.getDatabase();
