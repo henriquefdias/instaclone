@@ -3,6 +3,8 @@ import { FormGroup, FormControl } from "@angular/forms";
 import { Bd } from '../../bd.service';
 import * as firebase from 'firebase';
 import { Progresso } from '../../progresso.service';
+import { interval, Observable, Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-incluir-publicacao',
@@ -35,9 +37,24 @@ export class IncluirPublicacaoComponent implements OnInit {
       titulo: this.formulario.value.titulo,
       imagem: this.imagem[0]
     })
+    
+    let acompanhamentoUpload = interval(150);
 
-    console.log(this.progresso.status);
-    console.log(this.progresso.estado);
+    let continua = new Subject<boolean>()
+    continua.next(true)
+
+    acompanhamentoUpload
+      .pipe(
+        takeUntil(continua)
+      )
+      .subscribe(() => {
+      console.log(this.progresso.status);
+      console.log(this.progresso.estado);
+
+      if (this.progresso.status === 'concluido') {
+        continua.next(false)
+      }
+    })
     
   }
 
