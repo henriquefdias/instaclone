@@ -56,7 +56,14 @@ export class Bd {
                         .getDownloadURL()
                         .then((url: string) => {
                             publicacao.url_imagem = url
-                            publicacoes.push(publicacao)
+                            
+                            //consultar o nome do usuario
+                            firebase.default.database().ref(`usuario_detalhe${btoa(emailUsuario)}`)
+                                .once('value')
+                                .then((snapshot) => {
+                                    publicacao.nome_usuario = snapshot.val().nome_usuario
+                                    publicacoes.push(publicacao)
+                                })
                         })
                 })
 
