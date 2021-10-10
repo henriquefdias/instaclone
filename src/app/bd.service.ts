@@ -48,9 +48,8 @@ export class Bd {
             .then((snapshot: any) => {
                 // console.log(snapshot.val());
                 let publicacoes: Array<any> = [];
-
+                
                 snapshot.forEach((childSnapshot: any) => {
-
                     let publicacao = childSnapshot.val()
 
                     // consultar a url da imagem (storage)
@@ -61,7 +60,7 @@ export class Bd {
                             publicacao.url_imagem = url
                             
                             //consultar o nome do usuario
-                            firebase.default.database().ref(`usuario_detalhe${btoa(emailUsuario)}`)
+                            firebase.default.database().ref(`usuario_detalhe/${btoa(emailUsuario)}`)
                                 .once('value')
                                 .then((snapshot) => {
                                     publicacao.nome_usuario = snapshot.val().nome_usuario

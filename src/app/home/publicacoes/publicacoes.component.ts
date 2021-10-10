@@ -18,7 +18,6 @@ export class PublicacoesComponent implements OnInit {
   ngOnInit(): void {
     firebase.default.auth().onAuthStateChanged((user) => {
       this.email = user?.email
-
       this.atualizarTimeline()
     })
   }
@@ -27,6 +26,7 @@ export class PublicacoesComponent implements OnInit {
     this.bd.consultaPublicacoes(this.email)
       .then((publicacoes: any) => {
         this.publicacoes = publicacoes
+        console.log(this.publicacoes);
       })
   }
 }
