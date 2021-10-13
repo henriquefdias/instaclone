@@ -44,6 +44,7 @@ export class Bd {
 
             // consultar publicacoes (database)
             firebase.default.database().ref(`publicacoes/${btoa(emailUsuario)}`)
+            .orderByKey()
             .once('value')
             .then((snapshot: any) => {
                 // console.log(snapshot.val());
